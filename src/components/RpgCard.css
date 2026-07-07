@@ -1,0 +1,182 @@
+.rpg-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 220px;
+  min-height: 320px;
+  background: rgba(15, 17, 24, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 26px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
+
+  /* posição do cursor (%) e ângulo de tilt, atualizados via JS */
+  --mx: 50%;
+  --my: 50%;
+  --rx: 0deg;
+  --ry: 0deg;
+  --lift: 0px;
+
+  transform: translateY(var(--lift));
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform, box-shadow;
+  transition: transform 180ms ease-out,
+              box-shadow 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* enquanto o mouse se move dentro do card, a resposta precisa ser
+   quase instantânea; ao sair, .rpg-card volta a usar a transição
+   longa acima e cria o "assentamento" suave de volta ao neutro */
+.rpg-card--hovering {
+  --lift: -4px;
+  transition: transform 120ms ease-out, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.30),
+    0 0 18px rgba(255, 211, 61, 0.18);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.rpg-card__image {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  image-rendering: auto;
+}
+
+.rpg-card__content {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 1;
+}
+
+.rpg-card__title {
+  font-size: 16px;
+  line-height: 1.3;
+  margin: 0;
+  color: #ffd33d;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rpg-card__price {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(255, 211, 61, 0.12);
+  color: #ffd33d;
+  font-size: 13px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+/* =========================================================
+   Efeito "afundar" + brilho
+   O overflow: hidden do .rpg-card já recorta essas camadas nos
+   cantos arredondados, então não precisa repetir border-radius.
+   ========================================================= */
+
+.rpg-card__sink-shadow,
+.rpg-card__sink-highlight,
+.rpg-card__spotlight,
+.rpg-card__shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+/* sombra escura bem no ponto do cursor: dá o "fundo" da depressão */
+.rpg-card__sink-shadow {
+  background: radial-gradient(
+    circle at var(--mx) var(--my),
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.25) 18%,
+    transparent 45%
+  );
+  mix-blend-mode: multiply;
+}
+
+/* brilho claro deslocado pra cima-esquerda do cursor: luz batendo
+   na borda "próxima" do afundamento */
+.rpg-card__sink-highlight {
+  background: radial-gradient(
+    circle at calc(var(--mx) - 8%) calc(var(--my) - 8%),
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.12) 12%,
+    transparent 28%
+  );
+  mix-blend-mode: overlay;
+}
+
+/* brilho colorido (dourado, igual ao resto do card) seguindo o cursor */
+.rpg-card__spotlight {
+  background: radial-gradient(
+    circle at var(--mx) var(--my),
+    rgba(255, 211, 61, 0.5) 0%,
+    rgba(255, 211, 61, 0.15) 24%,
+    transparent 55%
+  );
+  mix-blend-mode: color-dodge;
+}
+
+/* faixa de brilho diagonal que varre o card enquanto o mouse
+   permanece em cima — o "sparkle" extra */
+.rpg-card__shimmer {
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.16) 48%,
+    rgba(255, 255, 255, 0.10) 52%,
+    transparent 65%
+  );
+  background-size: 220% 220%;
+  background-position: 130% 130%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  will-change: background-position, opacity;
+}
+
+.rpg-card--hovering .rpg-card__sink-shadow,
+.rpg-card--hovering .rpg-card__sink-highlight,
+.rpg-card--hovering .rpg-card__spotlight,
+.rpg-card--hovering .rpg-card__shimmer {
+  opacity: 1;
+}
+
+.rpg-card--hovering .rpg-card__shimmer {
+  animation: rpg-shimmer-sweep 1.5s ease-in-out infinite;
+}
+
+@keyframes rpg-shimmer-sweep {
+  0% {
+    background-position: 140% 140%;
+  }
+  50% {
+    background-position: 90% 90%;
+  }
+  100% {
+    background-position: 40% 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rpg-card,
+  .rpg-card__shimmer {
+    transition: none !important;
+    animation: none !important;
+  }
+}
