@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Logout from "./pages/Logout";
 import Favorites from "./pages/Favorites";
 import type { ReactNode } from "react";
+import RadialMenu from "./components/RadialMenu";
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const auth = useAuth();
@@ -38,6 +39,7 @@ function App() {
             }
           />
         </Routes>
+        <RadialMenu />
       </BrowserRouter>
     </AuthProvider>
   );

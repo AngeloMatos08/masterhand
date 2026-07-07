@@ -14,13 +14,13 @@ function Header() {
       </div>
       {user && (
         <div className="home-header__actions">
-          <span>Olá, {user.name || user.email}</span>
-          <Link to="/favorites" className="home-header__logout">
+          <span>Boas vindas, {user.name || user.email}</span>
+          {/* <Link to="/favorites" className="home-header__logout">
             Favoritos
-          </Link>
-          <Link to="/logout" className="home-header__logout">
+          </Link> */}
+          {/* <Link to="/logout" className="home-header__logout">
             Sair
-          </Link>
+          </Link> */}
         </div>
       )}
     </header>
