@@ -4,9 +4,10 @@ import "./RpgCard.css";
 
 interface RpgCardProps {
   rpg: RPG;
+  onOpen?: (rpg: RPG) => void;
 }
 
-function RpgCard({ rpg }: RpgCardProps) {
+function RpgCard({ rpg, onOpen }: RpgCardProps) {
   const cardRef = useRef<HTMLAnchorElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
@@ -49,6 +50,14 @@ function RpgCard({ rpg }: RpgCardProps) {
     el.style.setProperty("--my", "50%");
   }, []);
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (typeof onOpen === "function") {
+      e.preventDefault();
+      onOpen(rpg);
+      return;
+    }
+  };
+
   return (
     <a
       ref={cardRef}
@@ -56,6 +65,7 @@ function RpgCard({ rpg }: RpgCardProps) {
       href={rpg.storeLink || "#"}
       target="_blank"
       rel="noreferrer"
+      onClick={handleClick}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
