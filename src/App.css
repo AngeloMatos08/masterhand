@@ -41,11 +41,11 @@ body {
   margin-top: 12px;
 }
 
-.home-header__logout {
+/* .home-header__logout {
   color: #ffd33d;
   text-decoration: none;
   font-weight: 700;
-}
+} */
 
 .home-header__title {
   margin: 0;

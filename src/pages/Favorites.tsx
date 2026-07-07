@@ -47,9 +47,9 @@ function Favorites() {
               <h2>Favoritos</h2>
               <p>Seus RPGs favoritos ficam salvos aqui.</p>
             </div>
-            <Link to="/" className="favorites-back-link">
+            {/* <Link to="/" className="favorites-back-link">
               Voltar para Home
-            </Link>
+            </Link> */}
           </div>
         {isLoading ? (
           <Loading />
