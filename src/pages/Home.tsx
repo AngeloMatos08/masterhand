@@ -6,12 +6,14 @@ import SearchBar from "../components/SearchBar";
 import Loading from "../components/Loading";
 import EmptyState from "../components/EmptyState";
 import RpgCard from "../components/RpgCard";
+import RpgSheet from "../components/RpgSheet";
 import "../App.css";
 
 function Home() {
   const [rpgs, setRpgs] = useState<RPG[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedRpg, setSelectedRpg] = useState<RPG | null>(null);
 
   useEffect(() => {
     async function carregarRPGs() {
@@ -56,6 +58,9 @@ function Home() {
   const searchActive = search.trim().length > 0;
   const showEmptyState = searchActive && !isLoading && filteredRpgs.length === 0;
 
+  const handleOpen = (rpg: RPG) => setSelectedRpg(rpg);
+  const handleClose = () => setSelectedRpg(null);
+
   return (
     <main className="home-container">
       <Header />
@@ -92,8 +97,8 @@ function Home() {
           <section className="category-section">
             <h2>Sugeridos</h2>
             <div className="rpg-grid">
-              {categoryItems.sugeridos.map((rpg) => (
-                <RpgCard key={rpg.id} rpg={rpg} />
+                {categoryItems.sugeridos.map((rpg) => (
+                <RpgCard key={rpg.id} rpg={rpg} onOpen={handleOpen} />
               ))}
             </div>
           </section>
@@ -102,7 +107,7 @@ function Home() {
             <h2>Fantasia</h2>
             <div className="rpg-grid">
               {categoryItems.fantasia.map((rpg) => (
-                <RpgCard key={rpg.id} rpg={rpg} />
+                <RpgCard key={rpg.id} rpg={rpg} onOpen={handleOpen} />
               ))}
             </div>
           </section>
@@ -111,7 +116,7 @@ function Home() {
             <h2>Sobrevivência</h2>
             <div className="rpg-grid">
               {categoryItems.sobrevivencia.map((rpg) => (
-                <RpgCard key={rpg.id} rpg={rpg} />
+                <RpgCard key={rpg.id} rpg={rpg} onOpen={handleOpen} />
               ))}
             </div>
           </section>
@@ -120,7 +125,7 @@ function Home() {
             <h2>Faroeste</h2>
             <div className="rpg-grid">
               {categoryItems.faroeste.map((rpg) => (
-                <RpgCard key={rpg.id} rpg={rpg} />
+                <RpgCard key={rpg.id} rpg={rpg} onOpen={handleOpen} />
               ))}
             </div>
           </section>
@@ -129,10 +134,11 @@ function Home() {
             <h2>Catálogo</h2>
             <div className="rpg-grid">
               {sortedCatalog.map((rpg) => (
-                <RpgCard key={rpg.id} rpg={rpg} />
+                <RpgCard key={rpg.id} rpg={rpg} onOpen={handleOpen} />
               ))}
             </div>
           </section>
+          <RpgSheet rpg={selectedRpg} onClose={handleClose} />
         </>
       )}
     </main>
