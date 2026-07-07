@@ -103,7 +103,16 @@ function Home() {
           ) : (
             <ul className="search-results__list">
               {filteredRpgs.map((rpg) => (
-                  <li key={rpg.id} className="search-results__item">
+                  <li
+                    key={rpg.id}
+                    className="search-results__item"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleOpen(rpg)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") handleOpen(rpg);
+                    }}
+                  >
                     <img
                       className="search-results__cover"
                       src={`/capas/${rpg.id}.webp`}
@@ -166,9 +175,9 @@ function Home() {
               ))}
             </div>
           </section>
-          <RpgSheet rpg={selectedRpg} onClose={handleClose} />
         </>
       )}
+      <RpgSheet rpg={selectedRpg} onClose={handleClose} />
     </main>
   );
 }
