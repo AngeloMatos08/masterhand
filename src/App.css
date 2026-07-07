@@ -156,10 +156,20 @@ body {
 }
 
 .rpg-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 18px;
-  margin-top: 24px;
+    display: grid;
+    /* Voltamos para o auto-fit com 1fr para que cada linha calcule seu próprio espaço */
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 18px;
+    margin-top: 24px;
+    
+    /* Centraliza os elementos no meio da tela */
+    justify-content: center;
+    justify-items: center;
+
+    /* Define uma largura máxima para a fileira inteira não esticar infinitamente em monitores ultra-wide */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Sheet (modal) styles */
