@@ -1,0 +1,134 @@
+:root {
+    --menu-size: 60px; /* The size of the main button */
+    --menu-item-size: 50px;
+    --menu-radius: 150px; /* How far the items fly out */
+
+    /* Project colors (dark background + gold accent) */
+    --project-bg: #090a11;
+    --project-accent: #ffd33d;
+    --project-accent-contrast: #0a0a0a;
+    --surface: rgba(255,255,255,0.04);
+
+    --transition-speed: 0.4s;
+    --transition-curve: cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy */
+}
+
+.radial-menu {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    width: var(--menu-size); height: var(--menu-size);
+    z-index: 1000;
+}
+
+#menu-toggle-checkbox {
+    display: none;
+}
+
+.menu-toggle-label {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: var(--project-accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--project-accent-contrast);
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform var(--transition-speed) ease;
+    z-index: 2;
+}
+.menu-toggle-label:hover { filter: brightness(0.95); }
+
+.icon-open, .icon-close { position: absolute; width: 24px; height: 24px; transition: transform 0.3s ease, opacity 0.3s ease; }
+#menu-toggle-checkbox:checked + .menu-toggle-label .icon-open { transform: rotate(45deg); opacity: 0; }
+#menu-toggle-checkbox:checked + .menu-toggle-label .icon-close { transform: rotate(0); opacity: 1; }
+.icon-close { opacity: 0; transform: rotate(-45deg); }
+
+.menu-items { list-style: none; margin: 0; padding: 0; }
+
+.menu-item {
+    position: absolute;
+    top: 5px; left: 5px;
+    width: var(--menu-item-size); height: var(--menu-item-size);
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+    transition: transform var(--transition-speed) var(--transition-curve), 
+                opacity var(--transition-speed) var(--transition-curve);
+    pointer-events: none;
+    z-index: 1;
+}
+        
+.menu-item a {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+    background-color: var(--surface);
+    color: var(--project-accent);
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    overflow: hidden;
+}
+.menu-item a:hover { filter: brightness(1.05); }
+.menu-item svg { width: 20px; height: 20px; display: block; }
+
+/* make heart slightly larger and centered */
+.menu-item:nth-child(2) svg { width: 20px; height: 20px; }
+
+/* Avatar inside the menu */
+.radial-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--project-accent);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+#menu-toggle-checkbox:checked ~ .menu-items .menu-item {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Positions for 4 items: 90deg, 120deg, 150deg, 180deg */
+#menu-toggle-checkbox:checked ~ .menu-items .menu-item:nth-child(1) {
+    transform: translateY(calc(-1 * var(--menu-radius)));
+}
+
+#menu-toggle-checkbox:checked ~ .menu-items .menu-item:nth-child(2) {
+    transform: translate(calc(-0.5 * var(--menu-radius)), calc(-0.866 * var(--menu-radius)));
+}
+
+#menu-toggle-checkbox:checked ~ .menu-items .menu-item:nth-child(3) {
+    transform: translate(calc(-0.866 * var(--menu-radius)), calc(-0.5 * var(--menu-radius)));
+}
+
+#menu-toggle-checkbox:checked ~ .menu-items .menu-item:nth-child(4) {
+    transform: translateX(calc(-1 * var(--menu-radius)));
+}
+
+/* d20 image sizing */
+.d20-icon {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
+    border-radius: 10%;
+    border: none; /* removed border per request */
+    background: transparent;
+}
+
+/* logout button styling inside menu-item */
+.menu-item > a,
+.menu-item > button.radial-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--surface);
+    color: var(--project-accent);
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    overflow: hidden;
+    border: none;
+}
+
+.menu-item > button.radial-logout { cursor: pointer; }
+.menu-item > button.radial-logout svg { width: 20px; height: 20px; }

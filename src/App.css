@@ -16,7 +16,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #ffd33d;
-  font-family: system-ui, sans-serif;
+  font-family: var(--sans);
 }
 
 .home-container {
@@ -33,6 +33,19 @@ body {
   gap: 18px;
   margin-bottom: 32px;
 }
+
+.home-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+/* .home-header__logout {
+  color: #ffd33d;
+  text-decoration: none;
+  font-weight: 700;
+} */
 
 .home-header__title {
   margin: 0;
@@ -143,10 +156,20 @@ body {
 }
 
 .rpg-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 18px;
-  margin-top: 24px;
+    display: grid;
+    /* Voltamos para o auto-fit com 1fr para que cada linha calcule seu próprio espaço */
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 18px;
+    margin-top: 24px;
+    
+    /* Centraliza os elementos no meio da tela */
+    justify-content: center;
+    justify-items: center;
+
+    /* Define uma largura máxima para a fileira inteira não esticar infinitamente em monitores ultra-wide */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Sheet (modal) styles */
@@ -260,6 +283,28 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 18px;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.rpg-sheet__fav:hover {
+  background: rgba(255,255,255,0.12);
+  transform: scale(1.05);
+}
+
+.rpg-sheet__fav:active {
+  animation: heartPop 220ms ease;
+}
+
+.rpg-sheet__fav--active {
+  background: #ffd33d;
+  color: #1b1227;
+  box-shadow: 0 0 0 6px rgba(255,211,61,0.18);
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
 
 .rpg-sheet__body {
@@ -374,4 +419,107 @@ body {
 .rpg-list-empty {
   margin-top: 24px;
   color: #ccc;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.auth-card {
+  width: min(560px, 100%);
+  background: rgba(8, 10, 17, 0.95);
+  border: 1px solid rgba(255, 211, 61, 0.16);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+  padding: 36px;
+  color: #fff;
+}
+
+.auth-card h1 {
+  margin: 0 0 10px;
+  font-size: clamp(2rem, 2.5vw, 2.6rem);
+}
+
+.auth-card p {
+  margin: 0 0 28px;
+  color: #d9d0a7;
+}
+
+.auth-button {
+  width: 100%;
+  background: #ffd33d;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 16px;
+  color: #0a0a0a;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.auth-button--google {
+  background: #fff;
+  color: #111;
+}
+
+.auth-divider {
+  text-align: center;
+  margin: 22px 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.auth-form input {
+  width: 100%;
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #ffd33d;
+}
+
+.auth-error {
+  color: #ffb4b4;
+  margin: -6px 0 16px;
+}
+
+.auth-cta {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  color: #d9d0a7;
+}
+
+.auth-cta a {
+  color: #ffd33d;
+  text-decoration: none;
 }
