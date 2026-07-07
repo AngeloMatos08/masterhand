@@ -27,9 +27,25 @@ function Home() {
   }, []);
 
   const filteredRpgs = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return rpgs;
-    return rpgs.filter((rpg) => rpg.title.toLowerCase().includes(query));
+    const q = search.trim().toLowerCase();
+    if (!q) return rpgs;
+
+    return rpgs.filter((rpg) => {
+      if (rpg.title && rpg.title.toLowerCase().includes(q)) return true;
+      if (rpg.categoryShow1 && rpg.categoryShow1.toLowerCase().includes(q)) return true;
+      if (rpg.categoryShow2 && rpg.categoryShow2.toLowerCase().includes(q)) return true;
+
+      const cats = rpg.categories as unknown;
+      if (Array.isArray(cats)) {
+        if ((cats as string[]).some((c) => String(c).toLowerCase().includes(q))) return true;
+      }
+
+      if (typeof cats === "string" && cats.toLowerCase().includes(q)) return true;
+
+      if (String(rpg.id) === q) return true;
+
+      return false;
+    });
   }, [rpgs, search]);
 
   const categoryMap: Record<string, Array<number | string>> = {
@@ -43,8 +59,20 @@ function Home() {
     return Object.fromEntries(
       Object.entries(categoryMap).map(([category, keys]) => [
         category,
-        filteredRpgs.filter(
-          (rpg) => keys.includes(rpg.id) || keys.includes(rpg.title),
+        filteredRpgs.filter((rpg) =>
+          (keys as Array<number | string>).some((k) => {
+            if (typeof k === "number") return rpg.id === k;
+            const keyStr = String(k).trim().toLowerCase();
+            if (rpg.title && rpg.title.toLowerCase().includes(keyStr)) return true;
+            if (rpg.categoryShow1 && rpg.categoryShow1.toLowerCase() === keyStr) return true;
+            if (rpg.categoryShow2 && rpg.categoryShow2.toLowerCase() === keyStr) return true;
+            const cats = rpg.categories as unknown;
+            if (Array.isArray(cats)) {
+              return (cats as string[]).some((c) => String(c).toLowerCase().includes(keyStr));
+            }
+            if (typeof cats === "string") return cats.toLowerCase().includes(keyStr);
+            return false;
+          }),
         ),
       ]),
     ) as Record<keyof typeof categoryMap, RPG[]>;
