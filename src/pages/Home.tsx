@@ -7,13 +7,17 @@ import Loading from "../components/Loading";
 import EmptyState from "../components/EmptyState";
 import RpgCard from "../components/RpgCard";
 import RpgSheet from "../components/RpgSheet";
+import { useAuth } from "../contexts/AuthContext";
 import "../App.css";
 
 function Home() {
+  const { user, toggleFavorite } = useAuth();
   const [rpgs, setRpgs] = useState<RPG[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRpg, setSelectedRpg] = useState<RPG | null>(null);
+
+  const favoriteIds = useMemo(() => new Set(user?.favorites ?? []), [user]);
 
   useEffect(() => {
     async function carregarRPGs() {
@@ -177,7 +181,12 @@ function Home() {
           </section>
         </>
       )}
-      <RpgSheet rpg={selectedRpg} onClose={handleClose} />
+      <RpgSheet
+        rpg={selectedRpg}
+        onClose={handleClose}
+        isFavorite={selectedRpg ? favoriteIds.has(String(selectedRpg.id)) : false}
+        onToggleFavorite={() => selectedRpg && toggleFavorite(selectedRpg.id)}
+      />
     </main>
   );
 }

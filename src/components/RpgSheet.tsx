@@ -1,12 +1,17 @@
 import type { RPG } from "../models/RPG";
+import { useAuth } from "../contexts/AuthContext";
 import "../App.css";
 
 interface RpgSheetProps {
   rpg: RPG | null;
   onClose: () => void;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }
 
-export default function RpgSheet({ rpg, onClose }: RpgSheetProps) {
+export default function RpgSheet({ rpg, onClose, isFavorite = false, onToggleFavorite }: RpgSheetProps) {
+  const { user } = useAuth();
+
   if (!rpg) return null;
 
   const coverSrc = `/capas/${rpg.id}.webp`;
@@ -18,7 +23,20 @@ export default function RpgSheet({ rpg, onClose }: RpgSheetProps) {
           <button className="rpg-sheet__close" onClick={onClose} aria-label="Fechar">
             ✕
           </button>
-          <button className="rpg-sheet__fav" aria-label="Favoritar">♡</button>
+          {user && (
+            <button
+              type="button"
+              className={`rpg-sheet__fav${isFavorite ? " rpg-sheet__fav--active" : ""}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleFavorite?.();
+              }}
+              aria-pressed={isFavorite}
+              aria-label={isFavorite ? "Remover favorito" : "Adicionar favorito"}
+            >
+              {isFavorite ? "❤️" : "♡"}
+            </button>
+          )}
         </div>
 
         <div className="rpg-sheet__body">
