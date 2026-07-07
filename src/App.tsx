@@ -1,20 +1,7 @@
-import {useEffect} from "react";
-import { getRPGs } from "./services/rpgService";
+import Home from "./pages/Home";
 
 function App() {
-  useEffect(() => {
-    async function carregarRPGs() {
-      const rpgs = await getRPGs();
-      console.log(rpgs);
-      console.log("Quantidade de RPGs:", rpgs.length);
-    }
-    carregarRPGs();
-  }, []);
-  return (
-    <div className="App">
-      <h1>RPGs</h1>
-    </div>
-  );
+  return <Home />;
 }
 
 export default App;
